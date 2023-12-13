@@ -30,11 +30,17 @@ footer:{
   bottom:'0.25rem',
   left:'0.25rem',
   right:'0.25rem',
+  padding:'2rem',
 
   borderRadius: 6,
 
   display:'flex',
   alignItems:'center',
-  justifyContent:'center'
+  justifyContent:'space-between',
+
+  backgroundColor:'rgb(0,0,0,0.6)'
+
+
+  
 }
 })
