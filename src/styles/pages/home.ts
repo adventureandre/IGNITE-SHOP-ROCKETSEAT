@@ -16,6 +16,7 @@ export const Product = styled('a', {
   padding: '0.25rem',
   cursor:'pointer',
   position:'relative',
+  overflow:'hidden',
 
 display: 'flex',
 alignItems:'center',
@@ -38,9 +39,29 @@ footer:{
   alignItems:'center',
   justifyContent:'space-between',
 
-  backgroundColor:'rgb(0,0,0,0.6)'
+  backgroundColor:'rgb(0,0,0,0.6)',
+  transform:'translateY(110%)',
+  opacity:0,
+  transition:'all 0.2s ease-in-out',
+
+  strong:{
+      fontSize:'$lg'
+  },
+  span:{
+    fontSize:'$xl',
+    fontWeight:'bold',
+    color:'$green300'
+  }
 
 
+
+},
+
+'&:hover':{
+footer:{
+  transform: 'translateY(0%)',
+  opacity:1
   
+}
 }
 })
