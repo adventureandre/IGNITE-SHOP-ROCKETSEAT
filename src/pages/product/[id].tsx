@@ -1,9 +1,10 @@
 
 import { stripe } from "@/lib/stripe";
 import { ImageContainer, ProductContainer, ProductDetails } from "@/styles/pages/product";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
+import axios from "axios";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import Stripe from "stripe";
 
 interface ProductProps {
@@ -12,16 +13,35 @@ interface ProductProps {
         name: string;
         imageUrl: string;
         price: string;
-        description: string
+        description: string;
+        defaultPriceId: string
     }
 }
 
 export default function Product({ product }: ProductProps) {
+    const [isCreatingCheckoutSession, setisCreatingCheckoutSession] = useState(false)
+
+    async function handleByProduct() {
+        try {
+            setisCreatingCheckoutSession(true)
+
+            const response = await axios.post('/api/checkout', {
+                priceId: product.defaultPriceId,
+            })
+            const { checkoutUrl } = response.data;
+
+            window.location.href = checkoutUrl
+
+        } catch (err) {
+            setisCreatingCheckoutSession(false)
+            alert('Falha ao redirecionar ao checkout')
+        }
+    }
 
     return (
         <ProductContainer>
             <ImageContainer>
-                <Image src={product.imageUrl} width={520} height={480}  alt=""/>
+                <Image src={product.imageUrl} width={520} height={480} alt="" />
             </ImageContainer>
 
             <ProductDetails>
@@ -29,7 +49,7 @@ export default function Product({ product }: ProductProps) {
                 <span>{product.price}</span>
 
                 <p>{product.description}</p>
-                <button>
+                <button disabled={isCreatingCheckoutSession} onClick={handleByProduct}>
                     Comprar agora
                 </button>
             </ProductDetails>
@@ -38,11 +58,11 @@ export default function Product({ product }: ProductProps) {
 }
 
 
-export const getStaticPaths: GetStaticPaths =async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
 
-    return{
-        paths:[],
-        fallback:'blocking',
+    return {
+        paths: [],
+        fallback: 'blocking',
     }
 }
 
@@ -76,6 +96,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
                     currency: 'BRL'
                 }).format(price.unit_amount! / 100),
                 description: product.description,
+                defaultPriceId: price.id,
             }
         },
         revalidate: 60 * 60 * 1, // 1 hour
