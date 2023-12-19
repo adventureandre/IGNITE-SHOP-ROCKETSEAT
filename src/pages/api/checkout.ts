@@ -7,8 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const {priceId} = req.body;
 
   if(req.method !== 'POST'){
-    return res.status(405).json({error: 'Method not Allowed.'})
-    return res.status(405).json({URL: process.env.NEXT_URL})
+    return res.status(405).json({error: 'Method not Allowed.',url:process.env.NEXT_URL});
   }
 
   if(!priceId){
