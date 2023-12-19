@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import Image from "next/image";
+import Head from "next/head";
 
 interface SucessProps {
     customerName: string;
@@ -17,6 +18,11 @@ interface SucessProps {
 
 export default function Sucess({ customerName, product }: SucessProps) {
     return (
+    <>
+    <Head>
+        <title>Compra efetuada | Ignite Shop</title>
+        <meta name="robots" content="noindex" />
+    </Head>
         <SucessConteiner>
             <h1>Compra efetuada!</h1>
             <ImageConteiner>
@@ -28,6 +34,7 @@ export default function Sucess({ customerName, product }: SucessProps) {
             </p>
             <Link href='' >Voltar ao catálago </Link>
         </SucessConteiner>
+        </>
     )
 
 }
