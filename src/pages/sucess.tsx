@@ -42,7 +42,7 @@ export default function Sucess({ customerName, product }: SucessProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     
-    if (!query.sessionId) {
+    if (!query.session_id) {
         
     return{
         redirect:{
